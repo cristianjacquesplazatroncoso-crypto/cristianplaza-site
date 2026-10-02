@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cristian Plaza | Fotografía de Autor en Concepción y Biobío</title>
+  <meta name="description" content="Fotografía de autor, retratos exclusivos, eventos de alto nivel y proyectos editoriales en Concepción y Región del Biobío. Reserva tu sesión con Cristian Plaza.">
+  <meta name="keywords" content="fotografo concepcion, fotografia de autor biobio, retratos chile, fotografo eventos concepcion, cristian plaza fotografia, chiguayante">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cristianplaza.com/">
+  <meta property="og:title" content="Cristian Plaza | Fotografía de Autor">
+  <meta property="og:description" content="Capturando la elegancia de tus mejores momentos. Retratos exclusivos y eventos en Concepción y Biobío.">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-dark: #0b0b0d;
+      --bg-card: #141417;
+      --accent-gold: #c5a059;
+      --accent-gold-hover: #dfb76c;
+      --text-light: #f5f5f7;
+      --text-muted: #a1a1a6;
+      --border-color: #242429;
+      --font-title: 'Playfair Display', serif;
+      --font-body: 'Montserrat', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Visual Indicators when Edit Mode is active */
+    .editable-active [contenteditable="true"] {
+      outline: 1px dashed var(--accent-gold) !important;
+      background: rgba(197, 160, 89, 0.08);
+      cursor: text;
+    }
+
+    .img-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .card-admin-actions {
+      display: none;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 100;
+      gap: 8px;
+    }
+
+    .editable-active .card-admin-actions {
+      display: flex !important;
+    }
+
+    .change-img-btn, .delete-card-btn {
+      border: none;
+      padding: 7px 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      transition: all 0.2s;
+    }
+
+    .change-img-btn {
+      background: var(--accent-gold);
+      color: #000;
+    }
+
+    .change-img-btn:hover {
+      background: var(--accent-gold-hover);
+    }
+
+    .delete-card-btn {
+      background: #e63946;
+      color: #fff;
+    }
+
+    .delete-card-btn:hover {
+      background: #c1121f;
+    }
+
+    .add-card-wrapper {
+      display: none;
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .editable-active .add-card-wrapper {
+      display: block !important;
+    }
+
+    /* Modals & Lightbox */
+    .modal-overlay, .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay { z-index: 10000; }
+    .lightbox-overlay { z-index: 10001; }
+
+    .modal-overlay.active, .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--accent-gold);
+      padding: 2.5rem;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+
+    .modal-box h3 {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-box p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .modal-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .btn-gold-outline {
+      padding: 0.8rem 1.5rem;
+      border: 1px solid var(--accent-gold);
+      background: transparent;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-gold-outline:hover {
+      background: rgba(197, 160, 89, 0.15);
+      color: #fff;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    /* Lightbox Styles */
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+      border: 1px solid var(--border-color);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 25px;
+      right: 35px;
+      color: var(--accent-gold);
+      font-size: 2.5rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .lightbox-close:hover {
+      transform: scale(1.2);
+    }
+
+    /* Header & Navigation */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(11, 11, 13, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 1000;
+    }
+
+    nav {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+    }
+
+    .brand-logo {
+      font-family: var(--font-title);
+      font-size: 1.5rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .brand-logo span {
+      color: var(--accent-gold);
+      font-weight: 300;
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 5px;
+      margin-top: -3px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: var(--accent-gold);
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      padding: 0 1.5rem;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      z-index: 2;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-title);
+      font-size: 4rem;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      font-weight: 300;
+    }
+
+    .btn-gold {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      border: 1px solid var(--accent-gold);
+      background: var(--accent-gold);
+      color: var(--bg-dark);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-gold:hover {
+      background: var(--accent-gold-hover);
+      box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+    }
+
+    /* Sections General */
+    section {
+      padding: 7rem 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      color: var(--accent-gold);
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-title);
+      font-size: 2.8rem;
+      font-weight: 400;
+    }
+
+    /* Portfolio Section */
+    .portfolio-filters {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      color: var(--accent-gold);
+      border-bottom: 1px solid var(--accent-gold);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .portfolio-card {
+      position: relative;
+      height: 420px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .portfolio-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .portfolio-card:hover img {
+      transform: scale(1.06);
+    }
+
+    .portfolio-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11, 11, 13, 0.88), transparent 70%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .portfolio-card:hover .portfolio-overlay {
+      opacity: 1;
+    }
+
+    .portfolio-overlay h3 {
+      font-family: var(--font-title);
+      font-size: 1.5rem;
+      color: var(--text-light);
+    }
+
+    .portfolio-overlay p {
+      color: var(--accent-gold);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* About Section */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-image {
+      position: relative;
+    }
+
+    .about-image img {
+      width: 100%;
+      border-radius: 4px;
+      filter: grayscale(20%);
+    }
+
+    .about-image::after {
+      content: '';
+      position: absolute;
+      inset: -15px;
+      border: 1px solid var(--accent-gold);
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .about-text h3 {
+      font-family: var(--font-title);
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .about-text p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+
+    /* Services Section */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      padding: 3rem 2rem;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent-gold);
+    }
+
+    .service-icon {
+      font-size: 2.5rem;
+      color: var(--accent-gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-title);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Contact Section */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      background: var(--bg-card);
+      padding: 4rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .contact-info h3 {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item i {
+      color: var(--accent-gold);
+      font-size: 1.2rem;
+    }
+
+    .contact-form .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Hidden Admin Control Panel by Default */
+    .admin-panel {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1a1a1f;
+      border: 1px solid var(--accent-gold);
+      padding: 12px 20px;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      z-index: 9999;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .admin-panel.show-admin {
+      display: flex !important;
+    }
+
+    .admin-panel span {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 22px;
+      background: #333;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .toggle-switch.active {
+      background: var(--accent-gold);
+    }
+
+    .toggle-switch.active::after {
+      transform: translateX(22px);
+    }
+
+    @media (max-width: 900px) {
+      .hero-title { font-size: 2.8rem; }
+      .about-grid, .contact-wrapper { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-menu { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden File Input -->
+  <input type="file" id="globalFileInput" accept="image/*" style="display: none;">
+
+  <!-- Modal para trocar a imagem -->
+  <div id="imageModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Cambiar Fotografía</h3>
+      <p>Selecciona una opción para actualizar esta imagen:</p>
+      <div class="modal-buttons">
+        <button class="btn-gold" onclick="openFilePicker()">📁 Subir desde PC</button>
+        <button class="btn-gold-outline" onclick="openUrlPrompt()">🔗 Pegar enlace (URL)</button>
+      </div>
+      <button class="modal-close" onclick="closeImageModal()">✕ Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal (Zoom na foto) -->
+  <div id="lightboxModal" class="lightbox-overlay" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="Fotografía Ampliada" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- Secret Admin Control Panel -->
+  <div class="admin-panel" id="adminPanel">
+    <span>Modo Edición</span>
+    <div class="toggle-switch" id="editToggle" onclick="toggleEditMode()"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <nav>
+      <a href="#" class="brand-logo" id="secretLogoTrigger" onclick="handleLogoClick(event)">
+        CRISTIAN PLAZA
+        <span>FOTOGRAFÍA</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#inicio" class="nav-link">Inicio</a></li>
+        <li><a href="#portafolio" class="nav-link">Portafolio</a></li>
+        <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
+        <li><a href="#servicios" class="nav-link">Servicios</a></li>
+        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="inicio" class="hero" style="background-image: linear-gradient(rgba(11, 11, 13, 0.6), rgba(11, 11, 13, 0.9)), url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=2000&q=80');">
+    <button class="change-img-btn" style="position:absolute; top:90px; right:30px; display:none;" onclick="triggerHeroBgChange()">📷 Cambiar Fondo Topo</button>
+    <div class="hero-content">
+      <p class="hero-subtitle editable">Fotografía de Autor</p>
+      <h1 class="hero-title editable">Capturando la elegancia de tus mejores momentos</h1>
+      <p class="hero-description editable">
+        Retratos exclusivos, eventos de alto nivel y proyectos editoriales diseñados con una visión estética impecable.
+      </p>
+      <a href="https://wa.me/56988232081?text=Hola%20Cristian,%20me%20gustar%C3%ADa%20cotizar%20una%20sesi%C3%B3n%20fotogr%C3%A1fica" target="_blank" rel="noopener noreferrer" class="btn-gold">Reservar Sesión</a>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="portafolio" class="container">
+    <div class="section-header">
+      <span class="section-tag">Galería</span>
+      <h2 class="section-title editable">Portafolio Destacado</h2>
+    </div>
+
+    <div class="portfolio-filters">
+      <button class="filter-btn active" data-filter="all" onclick="filterPortfolio('all')">Todos</button>
+      <button class="filter-btn" data-filter="retratos" onclick="filterPortfolio('retratos')">Retratos</button>
+      <button class="filter-btn" data-filter="eventos" onclick="filterPortfolio('eventos')">Eventos</button>
+      <button class="filter-btn" data-filter="corporativo" onclick="filterPortfolio('corporativo')">Corporativo</button>
+    </div>
+
+    <!-- Portfolio Grid Rendered Dynamically -->
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+
+    <!-- Add Card Button (Only in Edit Mode) -->
+    <div class="add-card-wrapper">
+      <button class="btn-gold" onclick="addNewCard()">➕ Añadir Nueva Foto al Portafolio</button>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="sobre-mi" class="container">
+    <div class="about-grid">
+      <div class="about-image">
+        <div class="img-container">
+          <button class="change-img-btn" style="position:absolute; top:15px; right:15px; display:none;" onclick="triggerImageChange('imgAbout')">📷 Cambiar Foto</button>
+          <img id="imgAbout" src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?auto=format&fit=crop&w=800&q=80" alt="Cristian Plaza Fotógrafo">
+        </div>
+      </div>
+      <div class="about-text">
+        <span class="section-tag">Sobre Mí</span>
+        <h3 class="editable">Detrás del Lente: Cristian Plaza</h3>
+        <p class="editable">
+          Con más de una década documentando emociones, arquitectura y momentos trascendentales, mi enfoque fotográfico combina una dirección sutil con una atención meticulosa a la luz natural y la composición.
+        </p>
+        <p class="editable">
+          Mi misión es crear piezas visuales imperecederas, que trasciendan el tiempo y comuniquen la verdadera esencia de cada persona, marca o evento.
+        </p>
+        <a href="#contacto" class="btn-gold">Hablemos de tu Proyecto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="servicios" style="background: rgba(20, 20, 23, 0.5);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Especialidades</span>
+        <h2 class="section-title editable">Servicios Fotográficos</h2>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-user-tie"></i></div>
+          <h3 class="editable">Retratos de Autor</h3>
+          <p class="editable">Sesiones individuales, artísticas y de marca personal orientadas a destacar la presencia y autenticidad del retratado.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+          <h3 class="editable">Cobertura de Eventos</h3>
+          <p class="editable">Documentación discreta y elegante de galas, lanzamientos de marca, bodas exclusivas y eventos corporativos.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <h3 class="editable">Fotografía Corporativa</h3>
+          <p class="editable">Imágenes publicitarias e industriales para empresas que buscan proyectar profesionalismo y distinción.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contacto" class="container">
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <span class="section-tag">Contacto Directo</span>
+        <h3 class="editable">Iniciemos una Conversación</h3>
+        <p class="editable" style="color: var(--text-muted); margin-bottom: 2rem;">¿Tienes un proyecto en mente o deseas reservar una fecha? Envíame un mensaje y coordinaremos una sesión personalizada.</p>
+
+        <div class="info-item">
+          <i class="fa-solid fa-envelope"></i>
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Email</div>
+            <strong class="editable"><a href="mailto:contacto@cristianplaza.com" style="color: inherit; text-decoration: none;">contacto@cristianplaza.com</a></strong>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <i class="fa-brands fa-whatsapp"></i>
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">WhatsApp</div>
+            <strong class="editable"><a href="https://wa.me/56988232081" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">+56 9 8823 2081</a></strong>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Ubicación</div>
+            <strong class="editable">Concepción & Santiago, Chile</strong>
+          </div>
+        </div>
+      </div>
+
+      <form name="contacto" method="POST" data-netlify="true" class="contact-form">
+        <div class="form-group">
+          <input type="text" name="nombre" id="name" placeholder="Tu Nombre" required>
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" id="email" placeholder="Correo Electrónico" required>
+        </div>
+        <div class="form-group">
+          <textarea name="mensaje" id="message" rows="5" placeholder="Cuéntame sobre tu evento o proyecto..." required></textarea>
+        </div>
+        <button type="submit" class="btn-gold" style="width: 100%;">Enviar Mensaje</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Cristian Plaza. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- JavaScript Logic -->
+  <script>
+    let isEditMode = false;
+    let targetCardId = null;
+    let isHeroBg = false;
+    let activeFilter = 'all';
+
+    // Secret Admin Triggers (Ctrl + Shift + E) or Triple Click Logo
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
+        e.preventDefault();
+        revealAdminPanel();
+      }
+    });
+
+    let logoClicks = 0;
+    let logoTimer = null;
+    function handleLogoClick(e) {
+      logoClicks++;
+      clearTimeout(logoTimer);
+      logoTimer = setTimeout(() => { logoClicks = 0; }, 1200);
+
+      if (logoClicks >= 3) {
+        e.preventDefault();
+        revealAdminPanel();
+        logoClicks = 0;
+      }
+    }
+
+    function revealAdminPanel() {
+      const panel = document.getElementById('adminPanel');
+      panel.classList.toggle('show-admin');
+      if (panel.classList.contains('show-admin')) {
+        alert('🔒 Modo Administrador Revelado.\n\nUsa el interruptor flotante para activar el Modo Edición.');
+      }
+    }
+
+    // Default Portfolio List
+    // Default Portfolio List
+let portfolioList = [
+  // RETRATOS (Ensaios, Moda, Praia)
+  { id: 'card_1', category: 'retratos', img: 'foto-01.png', tag: 'Editorial', title: 'Retrato Artístico' },
+  { id: 'card_2', category: 'retratos', img: 'foto-02.png', tag: 'Moda', title: 'Retrato Summer' },
+  { id: 'card_4', category: 'retratos', img: 'foto-04.png', tag: 'Retrato', title: 'Belleza Natural' },
+  { id: 'card_6', category: 'retratos', img: 'foto-06.png', tag: 'Exterior', title: 'Golden Hour' },
+  { id: 'card_7', category: 'retratos', img: 'foto-07.png', tag: 'Playa', title: 'Editorial Costero' },
+  { id: 'card_9', category: 'retratos', img: 'foto-09.png', tag: 'Urbano', title: 'Sesión Exterior' },
+  { id: 'card_11', category: 'retratos', img: 'foto-11.png', tag: 'Fine Art', title: 'Luz Natural' },
+  { id: 'card_12', category: 'retratos', img: 'foto-12.png', tag: 'Retrato', title: 'Atardecer Dorado' },
+
+  // EVENTOS (Noivas, Casamentos, Galas)
+  { id: 'card_3', category: 'eventos', img: 'foto-03.png', tag: 'Boda', title: 'Novia Elegante' },
+  { id: 'card_13', category: 'eventos', img: 'foto-13.png', tag: 'Matrimonio', title: 'Boda Clásica' },
+  { id: 'card_14', category: 'eventos', img: 'foto-14.png', tag: 'Boda', title: 'Sesión Nupcial' },
+  { id: 'card_15', category: 'eventos', img: 'foto-15.png', tag: 'Fiesta', title: 'Gala & Celebración' },
+
+  // CORPORATIVO (Grupos, Lifestyle, Editorial)
+  { id: 'card_5', category: 'corporativo', img: 'foto-05.png', tag: 'Grupo', title: 'Fotografía Grupal' },
+  { id: 'card_8', category: 'corporativo', img: 'foto-08.png', tag: 'Campaña', title: 'Lifestyle Exterior' },
+  { id: 'card_10', category: 'corporativo', img: 'foto-10.png', tag: 'Comercial', title: 'Editorial de Marca' }
+];
+
+    // Render Portfolio Dynamic Grid
+    function renderPortfolio() {
+      const grid = document.getElementById('portfolioGrid');
+      grid.innerHTML = '';
+
+      if (portfolioList.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">No hay fotografías en el portafolio. ¡Haz clic en "Añadir Nueva Foto" para comenzar!</p>';
+        return;
+      }
+
+      portfolioList.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'portfolio-card';
+        card.setAttribute('data-id', item.id);
+        card.setAttribute('data-category', item.category);
+
+        card.innerHTML = `
+          <div class="img-container">
+            <div class="card-admin-actions">
+              <button class="change-img-btn" onclick="event.stopPropagation(); triggerImageChange('${item.id}')">📷 Cambiar</button>
+              <button class="delete-card-btn" onclick="event.stopPropagation(); deleteCard('${item.id}')">🗑️ Eliminar</button>
+            </div>
+            <img src="${item.img}" alt="${item.title}" onclick="handleCardImageClick('${item.img}')">
+          </div>
+          <div class="portfolio-overlay" onclick="handleCardImageClick('${item.img}')">
+            <p class="editable" contenteditable="${isEditMode}">${item.tag}</p>
+            <h3 class="editable" contenteditable="${isEditMode}">${item.title}</h3>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      filterPortfolio(activeFilter);
+    }
+
+    // Handle Image Zoom (Lightbox)
+    function handleCardImageClick(src) {
+      if (isEditMode) return;
+      openLightbox(src);
+    }
+
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Filter Portfolio
+    function filterPortfolio(category) {
+      activeFilter = category;
+      const filterBtns = document.querySelectorAll('.filter-btn');
+
+      filterBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-filter') === category);
+      });
+
+      const cards = document.querySelectorAll('.portfolio-card');
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        if (category === 'all' || cardCat === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Toggle Edit Mode
+    function toggleEditMode() {
+      isEditMode = !isEditMode;
+      const toggle = document.getElementById('editToggle');
+      const editables = document.querySelectorAll('.editable');
+
+      toggle.classList.toggle('active', isEditMode);
+      document.body.classList.toggle('editable-active', isEditMode);
+
+      editables.forEach(el => {
+        el.contentEditable = isEditMode;
+      });
+
+      document.querySelector('#inicio .change-img-btn').style.display = isEditMode ? 'block' : 'none';
+      document.querySelector('#sobre-mi .change-img-btn').style.display = isEditMode ? 'block' : 'none';
+
+      renderPortfolio();
+
+      if (isEditMode) {
+        alert('¡Modo Edición Activado!\n\n- Haz clic en los textos para editarlos.\n- Añade o borra imágenes según lo necesites.');
+      } else {
+        saveChanges();
+        alert('¡Todos los cambios han sido guardados exitosamente!');
+      }
+    }
+
+    // Add New Portfolio Card
+    function addNewCard() {
+      const categoryChoice = prompt('¿En qué categoría deseas añadir la nueva foto?\n\n- retratos\n- eventos\n- corporativo', activeFilter !== 'all' ? activeFilter : 'retratos');
+      
+      const validCategory = (categoryChoice && ['retratos', 'eventos', 'corporativo'].includes(categoryChoice.toLowerCase().trim()))
+        ? categoryChoice.toLowerCase().trim()
+        : 'retratos';
+
+      const newId = 'card_' + Date.now();
+      const newCard = {
+        id: newId,
+        category: validCategory,
+        img: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
+        tag: 'Nuevo Proyecto',
+        title: 'Fotografía ' + (portfolioList.length + 1)
+      };
+
+      portfolioList.push(newCard);
+      renderPortfolio();
+      saveChanges();
+      triggerImageChange(newId);
+    }
+
+    // Delete Card
+    function deleteCard(id) {
+      if (confirm('¿Estás seguro de que deseas eliminar esta fotografía del portafolio?')) {
+        portfolioList = portfolioList.filter(item => item.id !== id);
+        renderPortfolio();
+        saveChanges();
+      }
+    }
+
+    // Image Upload Modal Controls
+    function triggerImageChange(cardId) {
+      targetCardId = cardId;
+      isHeroBg = false;
+      document.getElementById('imageModal').classList.add('active');
+    }
+
+    function triggerHeroBgChange() {
+      targetCardId = null;
+      isHeroBg = true;
+      document.getElementById('imageModal').classList.add('active');
+    }
+
+    function closeImageModal() {
+      document.getElementById('imageModal').classList.remove('active');
+    }
+
+    function openFilePicker() {
+      closeImageModal();
+      document.getElementById('globalFileInput').click();
+    }
+
+    function openUrlPrompt() {
+      closeImageModal();
+      setTimeout(() => {
+        const url = prompt('Pega el enlace (URL) de la imagen:');
+        if (url && url.trim() !== '') {
+          applyNewImage(url.trim());
+        }
+      }, 100);
+    }
+
+    // Listen to local file input & compress image
+    document.getElementById('globalFileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        compressAndApplyImage(file);
+      }
+      this.value = '';
+    });
+
+    function compressAndApplyImage(file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDimension = 1200;
+
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = Math.round((height * maxDimension) / width);
+              width = maxDimension;
+            } else {
+              width = Math.round((width * maxDimension) / height);
+              height = maxDimension;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+          applyNewImage(compressedDataUrl);
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function applyNewImage(src) {
+      if (isHeroBg) {
+        document.getElementById('inicio').style.backgroundImage = `linear-gradient(rgba(11, 11, 13, 0.6), rgba(11, 11, 13, 0.9)), url('${src}')`;
+      } else if (targetCardId === 'imgAbout') {
+        document.getElementById('imgAbout').src = src;
+      } else if (targetCardId) {
+        const cardItem = portfolioList.find(p => p.id === targetCardId);
+        if (cardItem) {
+          cardItem.img = src;
+          renderPortfolio();
+        }
+      }
+      saveChanges();
+    }
+
+    // Save & Load LocalStorage
+    function saveChanges() {
+      const cards = document.querySelectorAll('.portfolio-card');
+      cards.forEach(card => {
+        const id = card.getAttribute('data-id');
+        const item = portfolioList.find(p => p.id === id);
+        if (item) {
+          const tagEl = card.querySelector('.portfolio-overlay p');
+          const titleEl = card.querySelector('.portfolio-overlay h3');
+          if (tagEl) item.tag = tagEl.innerHTML;
+          if (titleEl) item.title = titleEl.innerHTML;
+        }
+      });
+
+      localStorage.setItem('cristianPlazaPortfolio_v6', JSON.stringify(portfolioList));
+
+      const editableElements = document.querySelectorAll('.editable:not(.portfolio-overlay *)');
+      const savedText = {};
+      editableElements.forEach((el, index) => {
+        savedText[index] = el.innerHTML;
+      });
+      localStorage.setItem('cristianPlazaText_v5', JSON.stringify(savedText));
+
+      const savedImages = {
+        heroBg: document.getElementById('inicio').style.backgroundImage,
+        imgAbout: document.getElementById('imgAbout').src
+      };
+      localStorage.setItem('cristianPlazaImages_v5', JSON.stringify(savedImages));
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedPortfolio = localStorage.getItem('cristianPlazaPortfolio_v6');
+      if (savedPortfolio) {
+        portfolioList = JSON.parse(savedPortfolio);
+      }
+      renderPortfolio();
+
+      const savedText = localStorage.getItem('cristianPlazaText_v5');
+      if (savedText) {
+        const parsedText = JSON.parse(savedText);
+        const editableElements = document.querySelectorAll('.editable:not(.portfolio-overlay *)');
+        editableElements.forEach((el, index) => {
+          if (parsedText[index] !== undefined) {
+            el.innerHTML = parsedText[index];
+          }
+        });
+      }
+
+      const savedImages = localStorage.getItem('cristianPlazaImages_v5');
+      if (savedImages) {
+        const parsedImages = JSON.parse(savedImages);
+        if (parsedImages.heroBg) document.getElementById('inicio').style.backgroundImage = parsedImages.heroBg;
+        if (parsedImages.imgAbout) document.getElementById('imgAbout').src = parsedImages.imgAbout;
+      }
+    });
+  </script>
+<!-- TRAVA DE SEGURANÇA: Bloqueio de download e arrasto das fotos -->
+  <style>
+    img {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+  </style>
+
+  <script>
+    // Bloqueia o clique direito nas imagens
+    document.addEventListener('contextmenu', function(e) {
+      if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+      }
+    });
+
+    // Impede o visitante de clicar e arrastar a foto para fora
+    document.addEventListener('dragstart', function(e) {
+      if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
