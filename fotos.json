@@ -1,3 +1,10 @@
 {
-  "fotos": []
+  "fotos": [
+    {
+      "tag": "Portafolio",
+      "title": "Expo Novios 2026",
+      "category": "eventos",
+      "img": "/images/expo-novios-01.png"
+    }
+  ]
 }
