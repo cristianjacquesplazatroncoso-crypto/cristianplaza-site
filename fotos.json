@@ -1,10 +1,100 @@
 {
   "fotos": [
     {
-      "tag": "Portafolio",
       "title": "Expo Novios 2026",
       "category": "eventos",
-      "img": "/images/expo-novios-01.png"
+      "tag": "Portafolio",
+      "image": "/images/expo-novios-01.png"
+    },
+    {
+      "title": "Retrato 01",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-01.png"
+    },
+    {
+      "title": "Retrato 02",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-02.png"
+    },
+    {
+      "title": "Boda 03",
+      "category": "eventos",
+      "tag": "Portafolio",
+      "image": "foto-03.png"
+    },
+    {
+      "title": "Retrato 04",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-04.png"
+    },
+    {
+      "title": "Evento 05",
+      "category": "eventos",
+      "tag": "Portafolio",
+      "image": "foto-05.png"
+    },
+    {
+      "title": "Familia 06",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-06.png"
+    },
+    {
+      "title": "Sesión Playa 07",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-07.png"
+    },
+    {
+      "title": "Pareja 08",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-08.png"
+    },
+    {
+      "title": "Retrato Urbano 09",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-09.png"
+    },
+    {
+      "title": "Sesión Rocas 10",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-10.png"
+    },
+    {
+      "title": "Editorial 11",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-11.png"
+    },
+    {
+      "title": "Atardecer 12",
+      "category": "retratos",
+      "tag": "Portafolio",
+      "image": "foto-12.png"
+    },
+    {
+      "title": "Novia Clásica 13",
+      "category": "eventos",
+      "tag": "Portafolio",
+      "image": "foto-13.png"
+    },
+    {
+      "title": "Novios 14",
+      "category": "eventos",
+      "tag": "Portafolio",
+      "image": "foto-14.png"
+    },
+    {
+      "title": "Recepción 15",
+      "category": "eventos",
+      "tag": "Portafolio",
+      "image": "foto-15.png"
     }
   ]
 }
