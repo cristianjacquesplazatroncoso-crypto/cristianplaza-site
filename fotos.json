@@ -7,93 +7,93 @@
       "image": "/images/expo-novios-01.png"
     },
     {
-      "title": "Retrato 01",
+      "title": "Retrato Artístico",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Editorial",
       "image": "/foto-01.png"
     },
     {
-      "title": "Retrato 02",
+      "title": "Retrato Summer",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Moda",
       "image": "/foto-02.png"
     },
     {
-      "title": "Boda 03",
+      "title": "Novia Elegante",
       "category": "eventos",
-      "tag": "Portafolio",
+      "tag": "Boda",
       "image": "/foto-03.png"
     },
     {
-      "title": "Retrato 04",
+      "title": "Belleza Natural",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Retrato",
       "image": "/foto-04.png"
     },
     {
-      "title": "Evento 05",
-      "category": "eventos",
-      "tag": "Portafolio",
+      "title": "Fotografía Grupal",
+      "category": "corporativo",
+      "tag": "Grupo",
       "image": "/foto-05.png"
     },
     {
-      "title": "Familia 06",
+      "title": "Golden Hour",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Exterior",
       "image": "/foto-06.png"
     },
     {
-      "title": "Sesión Playa 07",
+      "title": "Editorial Costero",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Playa",
       "image": "/foto-07.png"
     },
     {
-      "title": "Pareja 08",
-      "category": "retratos",
-      "tag": "Portafolio",
+      "title": "Lifestyle Exterior",
+      "category": "corporativo",
+      "tag": "Campaña",
       "image": "/foto-08.png"
     },
     {
-      "title": "Retrato Urbano 09",
+      "title": "Sesión Exterior",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Urbano",
       "image": "/foto-09.png"
     },
     {
-      "title": "Sesión Rocas 10",
+      "title": "Sesión Rocas",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Exterior",
       "image": "/foto-10.png"
     },
     {
-      "title": "Editorial 11",
+      "title": "Luz Natural",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Fine Art",
       "image": "/foto-11.png"
     },
     {
-      "title": "Atardecer 12",
+      "title": "Atardecer Dorado",
       "category": "retratos",
-      "tag": "Portafolio",
+      "tag": "Retrato",
       "image": "/foto-12.png"
     },
     {
-      "title": "Novia Clásica 13",
+      "title": "Boda Clásica",
       "category": "eventos",
-      "tag": "Portafolio",
+      "tag": "Matrimonio",
       "image": "/foto-13.png"
     },
     {
-      "title": "Novios 14",
+      "title": "Sesión Nupcial",
       "category": "eventos",
-      "tag": "Portafolio",
+      "tag": "Boda",
       "image": "/foto-14.png"
     },
     {
-      "title": "Recepción 15",
+      "title": "Gala & Celebración",
       "category": "eventos",
-      "tag": "Portafolio",
+      "tag": "Fiesta",
       "image": "/foto-15.png"
     }
   ]
