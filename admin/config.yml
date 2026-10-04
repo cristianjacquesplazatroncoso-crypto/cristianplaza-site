@@ -24,4 +24,4 @@ collections:
                   { label: "Corporativo", value: "corporativo" }
                 ]}
               - { label: "Etiqueta (Tag)", name: "tag", widget: "string", default: "Portafolio" }
-              - { label: "Archivo de Imagen", name: "img", widget: "image" }
+              - { label: "Archivo de Imagen", name: "image", widget: "image" }
