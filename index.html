@@ -864,41 +864,80 @@
       }
     }
 
-    // Default Portfolio List
-    // Default Portfolio List
-let portfolioList = [];
-    // === CARREGA FOTOS DO CMS AUTOMATICAMENTE ===
-window.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const resposta = await fetch('/fotos.json?v=' + Date.now());
-    if (resposta.ok) {
-      const dados = await resposta.json();
-      if (dados && Array.isArray(dados.fotos) && dados.fotos.length > 0) {
-        const fotosNovas = dados.fotos.map((item, i) => ({
-          id: 'card_cms_' + i,
-          category: (item.category || 'retratos').toLowerCase(),
-          img: item.image || item.img,
-          tag: item.tag || 'Portafolio',
-          title: item.title || ''
-        }));
-        // Coloca as fotos do Decap CMS no começo da lista
-        portfolioList = [...fotosNovas, ...portfolioList];
-        // Redesenha a galeria na tela
-        renderPortfolio();
+    // Default Portfolio List (16 fotos de base para exibição imediata sem tela preta)
+    const defaultPortfolio = [
+      { id: 'card_cms_0', category: 'eventos', img: '/images/expo-novios-01.png', tag: 'Portafolio', title: 'Expo Novios 2026' },
+      { id: 'card_1', category: 'retratos', img: 'foto-01.png', tag: 'Editorial', title: 'Retrato Artístico' },
+      { id: 'card_2', category: 'retratos', img: 'foto-02.png', tag: 'Moda', title: 'Retrato Summer' },
+      { id: 'card_3', category: 'eventos', img: 'foto-03.png', tag: 'Boda', title: 'Novia Elegante' },
+      { id: 'card_4', category: 'retratos', img: 'foto-04.png', tag: 'Retrato', title: 'Belleza Natural' },
+      { id: 'card_5', category: 'corporativo', img: 'foto-05.png', tag: 'Grupo', title: 'Fotografía Grupal' },
+      { id: 'card_6', category: 'retratos', img: 'foto-06.png', tag: 'Exterior', title: 'Golden Hour' },
+      { id: 'card_7', category: 'retratos', img: 'foto-07.png', tag: 'Playa', title: 'Editorial Costero' },
+      { id: 'card_8', category: 'corporativo', img: 'foto-08.png', tag: 'Campaña', title: 'Lifestyle Exterior' },
+      { id: 'card_9', category: 'retratos', img: 'foto-09.png', tag: 'Urbano', title: 'Sesión Exterior' },
+      { id: 'card_10', category: 'retratos', img: 'foto-10.png', tag: 'Exterior', title: 'Sesión Rocas' },
+      { id: 'card_11', category: 'retratos', img: 'foto-11.png', tag: 'Fine Art', title: 'Luz Natural' },
+      { id: 'card_12', category: 'retratos', img: 'foto-12.png', tag: 'Retrato', title: 'Atardecer Dorado' },
+      { id: 'card_13', category: 'eventos', img: 'foto-13.png', tag: 'Matrimonio', title: 'Boda Clásica' },
+      { id: 'card_14', category: 'eventos', img: 'foto-14.png', tag: 'Boda', title: 'Sesión Nupcial' },
+      { id: 'card_15', category: 'eventos', img: 'foto-15.png', tag: 'Fiesta', title: 'Gala & Celebración' }
+    ];
+
+    let portfolioList = [...defaultPortfolio];
+
+    // === SINCRONIZA FOTOS DO CMS AUTOMATICAMENTE SEM DUPLICAR ===
+    async function carregarFotosCMS() {
+      try {
+        const resposta = await fetch('fotos.json?v=' + Date.now());
+        if (resposta.ok) {
+          const dados = await resposta.json();
+          if (dados && Array.isArray(dados.fotos) && dados.fotos.length > 0) {
+            const fotosNovas = dados.fotos.map((item, i) => ({
+              id: 'card_cms_' + i,
+              category: (item.category || 'retratos').toLowerCase().trim(),
+              img: item.image || item.img || item.url || '',
+              tag: item.tag || 'Portafolio',
+              title: item.title || ''
+            })).filter(f => f.img && f.img !== 'undefined');
+
+            if (fotosNovas.length > 0) {
+              // Deduplicação inteligente por nome de arquivo de imagem
+              const cleanKey = (str) => (str || '').replace(/^.*[\\\/]/, '').toLowerCase().trim();
+              const vistas = new Set();
+              const listaMesclada = [];
+
+              fotosNovas.forEach(f => {
+                const k = cleanKey(f.img);
+                if (k) vistas.add(k);
+                listaMesclada.push(f);
+              });
+
+              defaultPortfolio.forEach(f => {
+                const k = cleanKey(f.img);
+                if (!vistas.has(k)) {
+                  listaMesclada.push(f);
+                }
+              });
+
+              portfolioList = listaMesclada;
+              renderPortfolio();
+            }
+          }
+        }
+      } catch (erro) {
+        console.log('Mantendo galeria base:', erro);
       }
     }
-  } catch (erro) {
-    console.log('Usando galeria padrão:', erro);
-  }
-});
 
     // Render Portfolio Dynamic Grid
     function renderPortfolio() {
       const grid = document.getElementById('portfolioGrid');
+      if (!grid) return;
       grid.innerHTML = '';
 
       if (portfolioList.length === 0) {
-        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">No hay fotografías en el portafolio. ¡Haz clic en "Añadir Nueva Foto" para comenzar!</p>';
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">No hay fotografías en el portafolio.</p>';
         return;
       }
 
@@ -914,7 +953,7 @@ window.addEventListener('DOMContentLoaded', async () => {
               <button class="change-img-btn" onclick="event.stopPropagation(); triggerImageChange('${item.id}')">📷 Cambiar</button>
               <button class="delete-card-btn" onclick="event.stopPropagation(); deleteCard('${item.id}')">🗑️ Eliminar</button>
             </div>
-            <img src="${item.img}" alt="${item.title}" onclick="handleCardImageClick('${item.img}')">
+            <img src="${item.img}" alt="${item.title}" onclick="handleCardImageClick('${item.img}')" loading="lazy">
           </div>
           <div class="portfolio-overlay" onclick="handleCardImageClick('${item.img}')">
             <p class="editable" contenteditable="${isEditMode}">${item.tag}</p>
@@ -934,13 +973,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     function openLightbox(src) {
-      document.getElementById('lightboxImg').src = src;
-      document.getElementById('lightboxModal').classList.add('active');
+      const img = document.getElementById('lightboxImg');
+      if (img) img.src = src;
+      const modal = document.getElementById('lightboxModal');
+      if (modal) modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
-      document.getElementById('lightboxModal').classList.remove('active');
+      const modal = document.getElementById('lightboxModal');
+      if (modal) modal.classList.remove('active');
       document.body.style.overflow = 'auto';
     }
 
@@ -970,15 +1012,18 @@ window.addEventListener('DOMContentLoaded', async () => {
       const toggle = document.getElementById('editToggle');
       const editables = document.querySelectorAll('.editable');
 
-      toggle.classList.toggle('active', isEditMode);
+      if (toggle) toggle.classList.toggle('active', isEditMode);
       document.body.classList.toggle('editable-active', isEditMode);
 
       editables.forEach(el => {
         el.contentEditable = isEditMode;
       });
 
-      document.querySelector('#inicio .change-img-btn').style.display = isEditMode ? 'block' : 'none';
-      document.querySelector('#sobre-mi .change-img-btn').style.display = isEditMode ? 'block' : 'none';
+      const heroBtn = document.querySelector('#inicio .change-img-btn');
+      if (heroBtn) heroBtn.style.display = isEditMode ? 'block' : 'none';
+
+      const aboutBtn = document.querySelector('#sobre-mi .change-img-btn');
+      if (aboutBtn) aboutBtn.style.display = isEditMode ? 'block' : 'none';
 
       renderPortfolio();
 
@@ -1055,13 +1100,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Listen to local file input & compress image
-    document.getElementById('globalFileInput').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        compressAndApplyImage(file);
-      }
-      this.value = '';
-    });
+    const globalInput = document.getElementById('globalFileInput');
+    if (globalInput) {
+      globalInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          compressAndApplyImage(file);
+        }
+        this.value = '';
+      });
+    }
 
     function compressAndApplyImage(file) {
       const reader = new FileReader();
@@ -1098,9 +1146,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     function applyNewImage(src) {
       if (isHeroBg) {
-        document.getElementById('inicio').style.backgroundImage = `linear-gradient(rgba(11, 11, 13, 0.6), rgba(11, 11, 13, 0.9)), url('${src}')`;
+        const hero = document.getElementById('inicio');
+        if (hero) hero.style.backgroundImage = `linear-gradient(rgba(11, 11, 13, 0.6), rgba(11, 11, 13, 0.9)), url('${src}')`;
       } else if (targetCardId === 'imgAbout') {
-        document.getElementById('imgAbout').src = src;
+        const imgAb = document.getElementById('imgAbout');
+        if (imgAb) imgAb.src = src;
       } else if (targetCardId) {
         const cardItem = portfolioList.find(p => p.id === targetCardId);
         if (cardItem) {
@@ -1125,8 +1175,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
       });
 
-      localStorage.setItem('cristianPlazaPortfolio_v6', JSON.stringify(portfolioList));
-
       const editableElements = document.querySelectorAll('.editable:not(.portfolio-overlay *)');
       const savedText = {};
       editableElements.forEach((el, index) => {
@@ -1141,33 +1189,43 @@ window.addEventListener('DOMContentLoaded', async () => {
       localStorage.setItem('cristianPlazaImages_v5', JSON.stringify(savedImages));
     }
 
+    // Inicialização da página
     window.addEventListener('DOMContentLoaded', () => {
-      const savedPortfolio = localStorage.getItem('cristianPlazaPortfolio_v6');
-      if (savedPortfolio) {
-        portfolioList = JSON.parse(savedPortfolio);
-      }
+      // 1. Limpa cache antigo de testes no navegador para não travar a exibição
+      try {
+        localStorage.removeItem('cristianPlazaPortfolio_v6');
+      } catch (e) {}
+
+      // 2. Renderiza a galeria com as 16 fotos IMEDIATAMENTE (zero tela preta!)
       renderPortfolio();
 
-      const savedText = localStorage.getItem('cristianPlazaText_v5');
-      if (savedText) {
-        const parsedText = JSON.parse(savedText);
-        const editableElements = document.querySelectorAll('.editable:not(.portfolio-overlay *)');
-        editableElements.forEach((el, index) => {
-          if (parsedText[index] !== undefined) {
-            el.innerHTML = parsedText[index];
-          }
-        });
-      }
+      // 3. Sincroniza em segundo plano com o fotos.json do Sveltia CMS
+      carregarFotosCMS();
 
-      const savedImages = localStorage.getItem('cristianPlazaImages_v5');
-      if (savedImages) {
-        const parsedImages = JSON.parse(savedImages);
-        if (parsedImages.heroBg) document.getElementById('inicio').style.backgroundImage = parsedImages.heroBg;
-        if (parsedImages.imgAbout) document.getElementById('imgAbout').src = parsedImages.imgAbout;
-      }
+      // 4. Carrega textos customizados salvos localmente se existirem
+      try {
+        const savedText = localStorage.getItem('cristianPlazaText_v5');
+        if (savedText) {
+          const parsedText = JSON.parse(savedText);
+          const editableElements = document.querySelectorAll('.editable:not(.portfolio-overlay *)');
+          editableElements.forEach((el, index) => {
+            if (parsedText[index] !== undefined) {
+              el.innerHTML = parsedText[index];
+            }
+          });
+        }
+
+        const savedImages = localStorage.getItem('cristianPlazaImages_v5');
+        if (savedImages) {
+          const parsedImages = JSON.parse(savedImages);
+          if (parsedImages.heroBg) document.getElementById('inicio').style.backgroundImage = parsedImages.heroBg;
+          if (parsedImages.imgAbout) document.getElementById('imgAbout').src = parsedImages.imgAbout;
+        }
+      } catch (e) {}
     });
   </script>
-<!-- TRAVA DE SEGURANÇA: Bloqueio de download e arrasto das fotos -->
+
+  <!-- TRAVA DE SEGURANÇA: Bloqueio de download e arrasto das fotos -->
   <style>
     img {
       -webkit-user-select: none;
