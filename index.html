@@ -877,7 +877,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const fotosNovas = dados.fotos.map((item, i) => ({
           id: 'card_cms_' + i,
           category: (item.category || 'retratos').toLowerCase(),
-          img: item.img,
+          img: item.image || item.img,
           tag: item.tag || 'Portafolio',
           title: item.title || ''
         }));
