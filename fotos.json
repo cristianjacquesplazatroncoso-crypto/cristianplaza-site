@@ -10,91 +10,91 @@
       "title": "Retrato Artístico",
       "category": "retratos",
       "tag": "Editorial",
-      "image": "/foto-01.png"
+      "image": "/images/foto-01.png"
     },
     {
       "title": "Retrato Summer",
       "category": "retratos",
       "tag": "Moda",
-      "image": "/foto-02.png"
+      "image": "/images/foto-02.png"
     },
     {
       "title": "Novia Elegante",
       "category": "eventos",
       "tag": "Boda",
-      "image": "/foto-03.png"
+      "image": "/images/foto-03.png"
     },
     {
       "title": "Belleza Natural",
       "category": "retratos",
       "tag": "Retrato",
-      "image": "/foto-04.png"
+      "image": "/images/foto-04.png"
     },
     {
       "title": "Fotografía Grupal",
       "category": "corporativo",
       "tag": "Grupo",
-      "image": "/foto-05.png"
+      "image": "/images/foto-05.png"
     },
     {
       "title": "Golden Hour",
       "category": "retratos",
       "tag": "Exterior",
-      "image": "/foto-06.png"
+      "image": "/images/foto-06.png"
     },
     {
       "title": "Editorial Costero",
       "category": "retratos",
       "tag": "Playa",
-      "image": "/foto-07.png"
+      "image": "/images/foto-07.png"
     },
     {
       "title": "Lifestyle Exterior",
       "category": "corporativo",
       "tag": "Campaña",
-      "image": "/foto-08.png"
+      "image": "/images/foto-08.png"
     },
     {
       "title": "Sesión Exterior",
       "category": "retratos",
       "tag": "Urbano",
-      "image": "/foto-09.png"
+      "image": "/images/foto-09.png"
     },
     {
       "title": "Sesión Rocas",
       "category": "retratos",
       "tag": "Exterior",
-      "image": "/foto-10.png"
+      "image": "/images/foto-10.png"
     },
     {
       "title": "Luz Natural",
       "category": "retratos",
       "tag": "Fine Art",
-      "image": "/foto-11.png"
+      "image": "/images/foto-11.png"
     },
     {
       "title": "Atardecer Dorado",
       "category": "retratos",
       "tag": "Retrato",
-      "image": "/foto-12.png"
+      "image": "/images/foto-12.png"
     },
     {
       "title": "Boda Clásica",
       "category": "eventos",
       "tag": "Matrimonio",
-      "image": "/foto-13.png"
+      "image": "/images/foto-13.png"
     },
     {
       "title": "Sesión Nupcial",
       "category": "eventos",
       "tag": "Boda",
-      "image": "/foto-14.png"
+      "image": "/images/foto-14.png"
     },
     {
       "title": "Gala & Celebración",
       "category": "eventos",
       "tag": "Fiesta",
-      "image": "/foto-15.png"
+      "image": "/images/foto-15.png"
     }
   ]
 }
